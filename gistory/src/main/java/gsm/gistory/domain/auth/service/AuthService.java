@@ -4,7 +4,6 @@ import gsm.gistory.domain.auth.dto.request.LoginRequestDto;
 import gsm.gistory.domain.auth.dto.request.SignupRequestDto;
 import gsm.gistory.domain.user.entity.User;
 import gsm.gistory.domain.user.repository.UserRepository;
-import gsm.gistory.domain.auth.dto.request.LogoutRequestDto;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;

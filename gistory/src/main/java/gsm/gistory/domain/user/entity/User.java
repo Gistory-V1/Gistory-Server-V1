@@ -4,8 +4,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
-import org.springframework.stereotype.Service;
-
 
 @Entity
 @Table(name = "users")
