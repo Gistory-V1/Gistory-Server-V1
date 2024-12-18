@@ -1,7 +1,7 @@
 spring:
   jpa:
     hibernate:
-      ddl-auto: ${DDL_AUTO}
+      ddl-auto:
     show-sql: true
     properties:
       hibernate:
@@ -12,7 +12,8 @@ spring:
       enabled: true
 
   datasource:
-    url: jdbc:mysql://${DB_URL}/${DB_NAME}?useSSL=false&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true&&characterEncoding=UTF-8
+    url: jdbc:mariadb://${DB_URL}/${DB_NAME}?useSSL=false&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true&characterEncoding=UTF-8
+
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
     driver-class-name: org.mariadb.jdbc.Driver
