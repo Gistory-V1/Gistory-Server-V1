@@ -1,6 +1,5 @@
 package gsm.gistory.domain.user.repository;
 
-
 import gsm.gistory.domain.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
