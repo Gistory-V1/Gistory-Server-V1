@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/gistory.iml" filepath="$PROJECT_DIR$/.idea/gistory.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/gistory.gistory.main.iml" filepath="$PROJECT_DIR$/.idea/modules/gistory.gistory.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/gistory.main.iml" filepath="$PROJECT_DIR$/.idea/modules/gistory.main.iml" />
     </modules>
   </component>
 </project>
