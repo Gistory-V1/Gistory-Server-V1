@@ -186,7 +186,7 @@ public class NameService {
         if (email == null || !email.endsWith("@gsm.hs.kr")) {
             throw new IllegalArgumentException("이메일 형식이 올바르지 않습니다.");
         }
-        return email.split("@")[0]; // "s*****" 추출
+        return email.split("@")[0];
     }
 
     /**
