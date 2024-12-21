@@ -4,6 +4,7 @@ import gsm.gistory.domain.auth.dto.request.LoginRequestDto;
 import gsm.gistory.domain.auth.dto.request.SignupRequestDto;
 import gsm.gistory.domain.user.entity.User;
 import gsm.gistory.domain.user.repository.UserRepository;
+import gsm.gistory.global.session.SessionManager;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,6 +17,7 @@ public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final NameService nameService;
+    private final SessionManager sessionManager;
 
     public void signup(SignupRequestDto request) {
         validateEmail(request.getEmail());
@@ -38,7 +40,10 @@ public class AuthService {
 
         validatePassword(request.getPassword(), user.getPassword());
 
-        session.setAttribute("sessionId", user.getId());
+        // 세션 생성 로직 추가
+        String sessionId = session.getId();
+        sessionManager.createSession(sessionId, user.getId());
+        session.setAttribute("sessionId", sessionId);
     }
 
     public void logout(HttpSession session, String password) {
@@ -49,12 +54,24 @@ public class AuthService {
 
         validatePassword(password, user.getPassword());
 
+        String sessionId = (String) session.getAttribute("sessionId");
+        if (sessionId != null) {
+            sessionManager.deleteSession(sessionId);
+        }
+
         session.invalidate();
     }
 
     public void deleteAccount(HttpSession session) {
         Long userId = getSessionUserId(session);
+
         userRepository.deleteById(userId);
+
+        String sessionId = (String) session.getAttribute("sessionId");
+        if (sessionId != null) {
+            sessionManager.deleteSession(sessionId);
+        }
+
         session.invalidate();
     }
 
@@ -77,10 +94,11 @@ public class AuthService {
     }
 
     private Long getSessionUserId(HttpSession session) {
-        Long userId = (Long) session.getAttribute("sessionId");
-        if (userId == null) {
+        String sessionId = (String) session.getAttribute("sessionId");
+        if (sessionId == null) {
             throw new IllegalStateException("로그인 상태가 아닙니다.");
         }
-        return userId;
+
+        return sessionManager.validateSession(sessionId);
     }
 }
