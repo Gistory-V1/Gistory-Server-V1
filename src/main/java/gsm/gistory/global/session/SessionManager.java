@@ -2,7 +2,6 @@ package gsm.gistory.global.session;
 
 import gsm.gistory.domain.auth.repository.SessionRepository;
 import gsm.gistory.global.exception.CustomException;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -14,13 +13,11 @@ public class SessionManager {
 
     private final SessionRepository sessionRepository;
 
-    public void createSession(HttpSession session, Long userId) {
-        String sessionId = session.getId();
+    public void createSession(String sessionId, Long userId) {
         sessionRepository.save(sessionId, userId);
     }
 
-    public Long validateSession(HttpSession session) {
-        String sessionId = session.getId();
+    public Long validateSession(String sessionId) {
         Long userId = sessionRepository.findBySessionId(sessionId);
         if (userId == null) {
             throw new CustomException(INVALID_SESSION, "세션이 유효하지 않습니다.");
@@ -28,8 +25,7 @@ public class SessionManager {
         return userId;
     }
 
-    public void deleteSession(HttpSession session) {
-        String sessionId = session.getId();
+    public void deleteSession(String sessionId) {
         sessionRepository.delete(sessionId);
     }
 }
