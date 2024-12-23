@@ -1,6 +1,7 @@
 package gsm.gistory.domain.post.service;
 
 import gsm.gistory.domain.post.dto.request.CreatePostRequestDto;
+import gsm.gistory.domain.post.dto.response.PostResponseDto;
 import gsm.gistory.domain.post.entity.Post;
 import gsm.gistory.domain.post.repository.PostRepository;
 import gsm.gistory.domain.user.entity.User;
@@ -47,5 +48,28 @@ public class PostService {
         if (request.getContent() == null || request.getContent().length() > 300) {
             throw new CustomException(ErrorCode.INVALID_INPUT, "내용은 최대 300자까지 입력할 수 있습니다.");
         }
+    }
+    public PostResponseDto getPost(String sessionId, Long postId) {
+        // 세션 검증
+        sessionManager.validateSession(sessionId);
+
+        // 게시글 조회
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new CustomException(ErrorCode.POST_NOT_FOUND, "게시글을 찾을 수 없습니다."));
+
+        // 조회수 증가
+        post.setViews(post.getViews() + 1);
+        postRepository.save(post);
+
+        // Response 생성
+        return PostResponseDto.builder()
+                .postId(post.getId())
+                .title(post.getTitle())
+                .content(post.getContent())
+                .likeCount(post.getLikeCount())
+                .author(post.getAuthor())
+                .views(post.getViews())
+                .createdAt(post.getCreatedAt().toString())
+                .build();
     }
 }
