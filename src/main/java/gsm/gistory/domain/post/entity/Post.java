@@ -7,9 +7,10 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class Post {
 
     @Id
@@ -17,14 +18,14 @@ public class Post {
     private Long id;
 
     private String title;
-
-    @Lob
     private String content;
-
+    private Long likeCount;
     private String author;
-
     private Long views;
 
     private LocalDateTime createdAt;
-}
 
+    public void incrementViews() {
+        this.views += 1;
+    }
+}
