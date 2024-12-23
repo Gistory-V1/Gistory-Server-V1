@@ -8,9 +8,9 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Post {
 
     @Id
@@ -21,11 +21,17 @@ public class Post {
     private String content;
     private Long likeCount;
     private String author;
+    private Long authorId;
     private Long views;
 
     private LocalDateTime createdAt;
 
     public void incrementViews() {
-        this.views += 1;
+        this.views = this.views + 1;
+    }
+
+    public void update(String title, String content) {
+        this.title = title;
+        this.content = content;
     }
 }
