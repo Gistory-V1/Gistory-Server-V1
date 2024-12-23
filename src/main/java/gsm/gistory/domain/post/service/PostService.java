@@ -53,18 +53,14 @@ public class PostService {
     }
 
     public PostResponseDto getPost(String sessionId, Long postId) {
-        // 세션 검증
         sessionManager.validateSession(sessionId);
 
-        // 게시글 조회
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new CustomException(ErrorCode.POST_NOT_FOUND, "게시글을 찾을 수 없습니다."));
 
-        // 조회수 증가
-        post.incrementViews(); // 메서드 호출
+        post.incrementViews();
         postRepository.save(post);
 
-        // Response 생성
         return PostResponseDto.builder()
                 .postId(post.getId())
                 .title(post.getTitle())
@@ -78,20 +74,15 @@ public class PostService {
 
     @Transactional
     public void updatePost(UpdatePostRequestDto request, String sessionId) {
-        // 세션 검증 및 유저 ID 확인
         Long userId = sessionManager.validateSession(sessionId);
 
-        // 게시글 조회
         Post post = postRepository.findById(request.getPostId())
                 .orElseThrow(() -> new CustomException(ErrorCode.POST_NOT_FOUND, "게시글을 찾을 수 없습니다."));
 
-        // 게시글 작성자 검증
         validatePostOwnership(post, userId);
 
-        // 게시글 제목 및 내용 유효성 검증
         validatePostContent(request.getTitle(), request.getContent());
 
-        // 게시글 수정
         post.update(request.getTitle(), request.getContent());
     }
 
