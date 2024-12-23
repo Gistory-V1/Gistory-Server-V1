@@ -22,7 +22,7 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.CREATED).body("글 작성 성공");
     }
 
-    @GetMapping("/api/post")
+    @GetMapping
     public ResponseEntity<PostResponseDto> getPost(
             @RequestHeader("sessionId") String sessionId,
             @RequestParam("postId") Long postId) {
