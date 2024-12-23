@@ -21,7 +21,7 @@ public class Post {
     private String content;
     private Long likeCount;
     private String author;
-    private Long authorId; // 유저 ID 필드 추가
+    private Long authorId;
     private Long views;
 
     private LocalDateTime createdAt;
