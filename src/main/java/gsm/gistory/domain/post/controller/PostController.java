@@ -1,6 +1,7 @@
 package gsm.gistory.domain.post.controller;
 
 import gsm.gistory.domain.post.dto.request.CreatePostRequestDto;
+import gsm.gistory.domain.post.dto.response.PostResponseDto;
 import gsm.gistory.domain.post.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,5 +20,13 @@ public class PostController {
                                         @RequestHeader("sessionId") String sessionId) {
         postService.createPost(request, sessionId);
         return ResponseEntity.status(HttpStatus.CREATED).body("글 작성 성공");
+    }
+
+    @GetMapping("/api/post")
+    public ResponseEntity<PostResponseDto> getPost(
+            @RequestHeader("sessionId") String sessionId,
+            @RequestParam("postId") Long postId) {
+        PostResponseDto response = postService.getPost(sessionId, postId);
+        return ResponseEntity.ok(response);
     }
 }
