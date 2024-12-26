@@ -6,20 +6,22 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 
-
+import javax.crypto.SecretKey;
 import java.util.Date;
 
 @RequiredArgsConstructor
 @Component
 public class JwtTokenProvider {
 
-    private final String secretKey = "auth";
+    private final SecretKey secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     private final long accessTokenValidity = 1000L * 60 * 60; // 1시간
     private final long refreshTokenValidity = 1000L * 60 * 60 * 24 * 7; // 7일
+
 
     public String generateAccessToken(String email) {
         return Jwts.builder()
@@ -51,14 +53,21 @@ public class JwtTokenProvider {
 
     public boolean validateToken(String token) {
         try {
-            Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
+            Jwts.parserBuilder()
+                    .setSigningKey(secretKey)
+                    .build()
+                    .parseClaimsJws(token);
+            System.out.println("토큰 검증 성공: " + token);
             return true;
         } catch (ExpiredJwtException e) {
+            System.out.println("토큰 만료: " + e.getMessage());
             throw new CustomException(ErrorCode.TOKEN_EXPIRED);
         } catch (JwtException e) {
+            System.out.println("유효하지 않은 토큰: " + e.getMessage());
             throw new CustomException(ErrorCode.INVALID_TOKEN);
         }
     }
+
 
     public String getEmailFromToken(String token) {
         try {
