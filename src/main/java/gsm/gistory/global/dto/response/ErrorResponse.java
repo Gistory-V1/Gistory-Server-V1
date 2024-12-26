@@ -12,6 +12,6 @@ import org.springframework.http.HttpStatus;
 public class ErrorResponse {
 
     @JsonProperty("http_code")
-    private HttpStatus httpCode;
+    private int httpCode;
     private String message;
 }
