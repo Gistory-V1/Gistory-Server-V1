@@ -4,12 +4,12 @@ import gsm.gistory.domain.auth.dto.request.LoginRequest;
 import gsm.gistory.domain.auth.dto.request.SignUpRequest;
 import gsm.gistory.domain.auth.dto.response.LoginResponse;
 import gsm.gistory.domain.auth.dto.response.LogoutResponse;
-import gsm.gistory.domain.auth.dto.response.ReissueTokenResponsedto;
 import gsm.gistory.domain.auth.dto.response.SignUpResponse;
 import gsm.gistory.domain.auth.service.LoginService;
 import gsm.gistory.domain.auth.service.LogoutService;
 import gsm.gistory.domain.auth.service.ReissueService;
 import gsm.gistory.domain.auth.service.SignUpService;
+import gsm.gistory.global.security.jwt.dto.ReissueTokenResponsedto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
