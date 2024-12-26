@@ -22,6 +22,10 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public LoginResponse login(LoginRequest request) {
+        if (!request.getEmail().endsWith("@gsm.hs.kr")) {
+            throw new CustomException(ErrorCode.INVALID_EMAIL);
+        }
+
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
