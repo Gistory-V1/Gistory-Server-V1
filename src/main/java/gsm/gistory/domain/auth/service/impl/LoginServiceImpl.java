@@ -25,7 +25,6 @@ public class LoginServiceImpl implements LoginService {
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
-
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new CustomException(ErrorCode.INVALID_PASSWORD);
         }
@@ -38,8 +37,8 @@ public class LoginServiceImpl implements LoginService {
                 accessToken,
                 refreshToken,
                 jwtTokenProvider.getAccessTokenExpiration(accessToken),
-                jwtTokenProvider.getRefreshTokenExpiration(refreshToken)
+                jwtTokenProvider.getRefreshTokenExpiration(refreshToken),
+                user.getName()
         );
     }
-
 }
