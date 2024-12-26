@@ -8,7 +8,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -25,29 +24,27 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         String authorizationHeader = request.getHeader("Authorization");
-
-        // Authorization 헤더 확인
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+            System.out.println("Authorization 헤더가 누락되었거나 잘못된 형식입니다.");
             filterChain.doFilter(request, response);
             return;
         }
 
-        // 토큰 추출 및 검증
         String token = authorizationHeader.substring(7);
-        jwtTokenProvider.validateToken(token);
+        try {
+            jwtTokenProvider.validateToken(token);
+            String email = jwtTokenProvider.getEmailFromToken(token);
 
-        // 사용자 정보 추출
-        String email = jwtTokenProvider.getEmailFromToken(token);
+            UsernamePasswordAuthenticationToken authentication =
+                    new UsernamePasswordAuthenticationToken(email, null, null);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            System.out.println("인증 성공: " + email);
+        } catch (Exception e) {
+            System.out.println("인증 실패: " + e.getMessage());
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
 
-        // Spring Security 인증 객체 생성
-        UsernamePasswordAuthenticationToken authentication =
-                new UsernamePasswordAuthenticationToken(email, null, null);
-        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
-        // SecurityContextHolder에 인증 객체 저장
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        // 다음 필터 호출
         filterChain.doFilter(request, response);
     }
 }
