@@ -21,6 +21,10 @@ public class SignUpServiceImpl implements SignUpService {
 
     @Override
     public SignUpResponse signup(SignUpRequest signUpRequest) {
+        if (!signUpRequest.getEmail().endsWith("@gsm.hs.kr")) {
+            throw new CustomException(ErrorCode.INVALID_EMAIL);
+        }
+
         if (userRepository.existsByEmail(signUpRequest.getEmail())) {
             throw new CustomException(ErrorCode.USER_ALREADY_EXISTS);
         }
