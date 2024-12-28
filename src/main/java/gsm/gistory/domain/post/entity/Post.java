@@ -39,4 +39,13 @@ public class Post {
     public void incrementViews() {
         this.views += 1;
     }
+
+    public void updateTitleAndContent(String title, String content) {
+        if (title != null && !title.isBlank()) {
+            this.title = title;
+        }
+        if (content != null && !content.isBlank()) {
+            this.content = content;
+        }
+    }
 }
