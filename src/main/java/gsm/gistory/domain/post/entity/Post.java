@@ -48,4 +48,13 @@ public class Post {
             this.content = content;
         }
     }
+    public void incrementLikeCount() {
+        this.likeCount += 1;
+    }
+
+    public void decrementLikeCount() {
+        if (this.likeCount > 0) {
+            this.likeCount -= 1;
+        }
+    }
 }
