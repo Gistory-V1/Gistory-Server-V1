@@ -1,13 +1,14 @@
 package gsm.gistory.domain.post.controller;
 
 import gsm.gistory.domain.post.dto.request.CreatePostRequest;
+import gsm.gistory.domain.post.dto.request.LikePostRequest;
 import gsm.gistory.domain.post.dto.request.PostUpdateRequest;
+import gsm.gistory.domain.post.dto.request.UnlikePostRequest;
 import gsm.gistory.domain.post.dto.response.CreatePostResponse;
 import gsm.gistory.domain.post.dto.response.GetPostResponse;
+import gsm.gistory.domain.post.dto.response.LikePostResponse;
 import gsm.gistory.domain.post.dto.response.PostUpdateResponse;
-import gsm.gistory.domain.post.service.CreatePostService;
-import gsm.gistory.domain.post.service.GetPostService;
-import gsm.gistory.domain.post.service.PostUpdateService;
+import gsm.gistory.domain.post.service.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,9 @@ public class PostController {
     private final CreatePostService createPostService;
     private final GetPostService getPostService;
     private final PostUpdateService postUpdateService;
+    private final LikePostService likePostService;
+    private final UnlikePostService unlikePostService;
+
 
     @PostMapping("/create")
     public ResponseEntity<CreatePostResponse> createPost(
@@ -45,6 +49,24 @@ public class PostController {
             @RequestBody PostUpdateRequest request,
             @RequestHeader("Authorization") String authorization) {
         PostUpdateResponse response = postUpdateService.updatePost(request, authorization);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping
+    public ResponseEntity<LikePostResponse> likePost(
+            @RequestHeader("Authorization") String authorization,
+            @RequestBody LikePostRequest request) {
+        LikePostResponse response = likePostService.likePost(request.getPostId(), request.isLikeClick(), authorization);
+        return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<LikePostResponse> unlikePost(
+            @RequestHeader("Authorization") String authorization,
+            @RequestBody UnlikePostRequest request) {
+
+        LikePostResponse response = unlikePostService.unlikePost(request.getPostId(), authorization);
+
         return ResponseEntity.ok(response);
     }
 }
