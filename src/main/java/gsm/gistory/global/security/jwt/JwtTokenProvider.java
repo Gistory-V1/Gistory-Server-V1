@@ -5,30 +5,37 @@ import gsm.gistory.global.security.jwt.exception.ErrorCode;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-
 import javax.crypto.SecretKey;
 import java.util.Date;
 
-@RequiredArgsConstructor
 @Component
+@RequiredArgsConstructor
 public class JwtTokenProvider {
 
-    private final SecretKey secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-    private final long accessTokenValidity = 1000L * 60 * 60; // 1시간
-    private final long refreshTokenValidity = 1000L * 60 * 60 * 24 * 7; // 7일
+    private final SecretKey secretKey = Keys.hmacShaKeyFor(
+            getKeyBytes(System.getenv("JWT_SECRET_KEY"))
+    );
 
+    private final long accessTokenValidity = Long.parseLong(System.getenv("JWT_ACCESS_TOKEN_VALIDITY"));
+    private final long refreshTokenValidity = Long.parseLong(System.getenv("JWT_REFRESH_TOKEN_VALIDITY"));
+
+    private static byte[] getKeyBytes(String key) {
+        if (key == null || key.length() < 32) {
+            throw new IllegalArgumentException("JWT secret key must be at least 32 characters long.");
+        }
+        return key.getBytes();
+    }
 
     public String generateAccessToken(String email) {
         return Jwts.builder()
                 .setSubject(email)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + accessTokenValidity))
-                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .signWith(secretKey)
                 .compact();
     }
 
@@ -37,7 +44,7 @@ public class JwtTokenProvider {
                 .setSubject(email)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + refreshTokenValidity))
-                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .signWith(secretKey)
                 .compact();
     }
 
@@ -61,37 +68,38 @@ public class JwtTokenProvider {
             return true;
         } catch (ExpiredJwtException e) {
             System.out.println("토큰 만료: " + e.getMessage());
-            throw new CustomException(ErrorCode.TOKEN_EXPIRED);
+            throw new CustomException(ErrorCode.TOKEN_EXPIRED, "토큰이 만료되었습니다.");
         } catch (JwtException e) {
             System.out.println("유효하지 않은 토큰: " + e.getMessage());
-            throw new CustomException(ErrorCode.INVALID_TOKEN);
+            throw new CustomException(ErrorCode.INVALID_TOKEN, "유효하지 않은 토큰입니다.");
         }
     }
 
-
     public String getEmailFromToken(String token) {
         try {
-            return Jwts.parser()
+            return Jwts.parserBuilder()
                     .setSigningKey(secretKey)
+                    .build()
                     .parseClaimsJws(token)
                     .getBody()
                     .getSubject();
         } catch (ExpiredJwtException e) {
-            throw new CustomException(ErrorCode.TOKEN_EXPIRED);
+            throw new CustomException(ErrorCode.TOKEN_EXPIRED, "토큰이 만료되었습니다.");
         } catch (JwtException e) {
-            throw new CustomException(ErrorCode.INVALID_TOKEN);
+            throw new CustomException(ErrorCode.INVALID_TOKEN, "유효하지 않은 토큰입니다.");
         }
     }
 
     private Date extractExpiration(String token) {
         try {
-            return Jwts.parser()
+            return Jwts.parserBuilder()
                     .setSigningKey(secretKey)
+                    .build()
                     .parseClaimsJws(token)
                     .getBody()
                     .getExpiration();
         } catch (JwtException e) {
-            throw new CustomException(ErrorCode.INVALID_TOKEN);
+            throw new CustomException(ErrorCode.INVALID_TOKEN, "유효하지 않은 토큰입니다.");
         }
     }
 }
