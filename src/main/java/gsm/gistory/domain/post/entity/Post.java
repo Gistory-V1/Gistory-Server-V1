@@ -32,14 +32,17 @@ public class Post {
     @JoinColumn(name = "profile_id") // 외래 키 컬럼명 설정
     private Profile profile;
 
+    @Builder.Default
     @Column(nullable = false)
     private Long likeCount = 0L;
 
+    @Builder.Default
     @Column(nullable = false)
     private Long views = 0L;
 
     private String authorName;
 
+    @Builder.Default
     @Column(nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
@@ -55,6 +58,7 @@ public class Post {
             this.content = content;
         }
     }
+
     public void incrementLikeCount() {
         this.likeCount += 1;
     }
