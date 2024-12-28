@@ -1,10 +1,13 @@
 package gsm.gistory.domain.post.controller;
 
 import gsm.gistory.domain.post.dto.request.CreatePostRequest;
+import gsm.gistory.domain.post.dto.request.PostUpdateRequest;
 import gsm.gistory.domain.post.dto.response.CreatePostResponse;
 import gsm.gistory.domain.post.dto.response.GetPostResponse;
+import gsm.gistory.domain.post.dto.response.PostUpdateResponse;
 import gsm.gistory.domain.post.service.CreatePostService;
 import gsm.gistory.domain.post.service.GetPostService;
+import gsm.gistory.domain.post.service.PostUpdateService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,6 +21,7 @@ public class PostController {
 
     private final CreatePostService createPostService;
     private final GetPostService getPostService;
+    private final PostUpdateService postUpdateService;
 
     @PostMapping("/create")
     public ResponseEntity<CreatePostResponse> createPost(
@@ -33,6 +37,14 @@ public class PostController {
             @RequestParam("postId") Long postId
     ) {
         GetPostResponse response = getPostService.getPost(postId, authorization);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/update")
+    public ResponseEntity<PostUpdateResponse> updatePost(
+            @RequestBody PostUpdateRequest request,
+            @RequestHeader("Authorization") String authorization) {
+        PostUpdateResponse response = postUpdateService.updatePost(request, authorization);
         return ResponseEntity.ok(response);
     }
 }
