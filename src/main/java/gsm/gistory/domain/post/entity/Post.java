@@ -38,6 +38,8 @@ public class Post {
     @Column(nullable = false)
     private Long views = 0L;
 
+    private String authorName;
+
     @Column(nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
