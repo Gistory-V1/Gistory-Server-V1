@@ -22,16 +22,16 @@ public class SignUpServiceImpl implements SignUpService {
     @Override
     public SignUpResponse signup(SignUpRequest signUpRequest) {
         if (!signUpRequest.getEmail().endsWith("@gsm.hs.kr")) {
-            throw new CustomException(ErrorCode.INVALID_EMAIL);
+            throw new CustomException(ErrorCode.INVALID_EMAIL, "제목은 1 ~ 15글자여야 합니다.");
         }
 
         if (userRepository.existsByEmail(signUpRequest.getEmail())) {
-            throw new CustomException(ErrorCode.USER_ALREADY_EXISTS);
+            throw new CustomException(ErrorCode.USER_ALREADY_EXISTS, "제목은 1 ~ 15글자여야 합니다.");
         }
 
         String name = StudentEmailMapper.getNameByEmail(signUpRequest.getEmail());
         if ("Unknown".equals(name)) {
-            throw new CustomException(ErrorCode.INVALID_EMAIL);
+            throw new CustomException(ErrorCode.INVALID_EMAIL, "제목은 1 ~ 15글자여야 합니다.");
         }
 
         User user = User.builder()

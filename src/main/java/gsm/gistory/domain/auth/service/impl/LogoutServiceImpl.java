@@ -17,12 +17,12 @@ public class LogoutServiceImpl implements LogoutService {
     @Override
     public LogoutResponse logout(String token) {
         if (!token.startsWith("Bearer ")) {
-            throw new CustomException(ErrorCode.INVALID_TOKEN);
+            throw new CustomException(ErrorCode.INVALID_TOKEN, "제목은 1 ~ 15글자여야 합니다.");
         }
         String accessToken = token.substring(7);
 
         if (!jwtProvider.validateToken(accessToken)) {
-            throw new CustomException(ErrorCode.INVALID_TOKEN);
+            throw new CustomException(ErrorCode.INVALID_TOKEN, "제목은 1 ~ 15글자여야 합니다.");
         }
 
         return new LogoutResponse("로그아웃 성공");

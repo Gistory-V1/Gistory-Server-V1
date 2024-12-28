@@ -23,14 +23,14 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public LoginResponse login(LoginRequest request) {
         if (!request.getEmail().endsWith("@gsm.hs.kr")) {
-            throw new CustomException(ErrorCode.INVALID_EMAIL);
+            throw new CustomException(ErrorCode.INVALID_EMAIL, "이메일은 '@gsm.hs.kr'로 끝나야 합니다.");
         }
 
         User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND, "사용자를 찾을 수 없습니다."));
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new CustomException(ErrorCode.INVALID_PASSWORD);
+            throw new CustomException(ErrorCode.INVALID_PASSWORD, "비밀번호가 잘못되었습니다.");
         }
 
         String accessToken = jwtTokenProvider.generateAccessToken(user.getEmail());

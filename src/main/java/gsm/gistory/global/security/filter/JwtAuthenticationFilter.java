@@ -1,6 +1,7 @@
 package gsm.gistory.global.security.filter;
 
 import gsm.gistory.global.security.jwt.JwtTokenProvider;
+import gsm.gistory.global.security.jwt.exception.CustomException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,7 +23,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-
         String authorizationHeader = request.getHeader("Authorization");
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
             System.out.println("Authorization 헤더가 누락되었거나 잘못된 형식입니다.");
@@ -39,10 +39,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     new UsernamePasswordAuthenticationToken(email, null, null);
             SecurityContextHolder.getContext().setAuthentication(authentication);
             System.out.println("인증 성공: " + email);
-        } catch (Exception e) {
+        } catch (CustomException e) {
             System.out.println("인증 실패: " + e.getMessage());
-            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-            return;
+            throw e;
         }
 
         filterChain.doFilter(request, response);
