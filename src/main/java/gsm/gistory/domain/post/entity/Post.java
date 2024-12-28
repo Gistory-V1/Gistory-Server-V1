@@ -1,5 +1,6 @@
 package gsm.gistory.domain.post.entity;
 
+import gsm.gistory.domain.profile.entity.Profile;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,6 +27,10 @@ public class Post {
     private String content;
 
     private String email;
+
+    @ManyToOne
+    @JoinColumn(name = "profile_id") // 외래 키 컬럼명 설정
+    private Profile profile;
 
     @Column(nullable = false)
     private Long likeCount = 0L;
