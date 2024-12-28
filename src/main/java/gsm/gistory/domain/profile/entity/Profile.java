@@ -18,4 +18,6 @@ public class Profile {
 
     @OneToMany(mappedBy = "profile")
     private List<Post> posts;
+
+    private Long subCount;
 }
