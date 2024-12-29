@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class SubscribeServiceImpl implements SubscribeService {
 
     private final SubscriptionRepository subscriptionRepository;
-    private final ProfileRepository profileRepository; // 추가
+    private final ProfileRepository profileRepository;
     private final JwtTokenProvider jwtTokenProvider;
 
     @Override
