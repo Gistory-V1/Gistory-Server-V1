@@ -17,7 +17,7 @@ public class ReissueServiceImpl implements ReissueService {
     @Override
     public ReissueTokenResponsedto reissue(String refreshToken) {
         if (!jwtTokenProvider.validateToken(refreshToken)) {
-            throw new CustomException(ErrorCode.INVALID_REFRESH_TOKEN, "제목은 1 ~ 15글자여야 합니다.");
+            throw new CustomException(ErrorCode.INVALID_REFRESH_TOKEN, "유효하지 않은 refreshToken 입니다.");
         }
 
         String email = jwtTokenProvider.getEmailFromToken(refreshToken);

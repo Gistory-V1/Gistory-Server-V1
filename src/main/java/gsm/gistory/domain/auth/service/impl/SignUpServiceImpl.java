@@ -22,16 +22,16 @@ public class SignUpServiceImpl implements SignUpService {
     @Override
     public SignUpResponse signup(SignUpRequest signUpRequest) {
         if (!signUpRequest.getEmail().endsWith("@gsm.hs.kr")) {
-            throw new CustomException(ErrorCode.INVALID_EMAIL, "제목은 1 ~ 15글자여야 합니다.");
+            throw new CustomException(ErrorCode.INVALID_EMAIL, "이메일은 '@gsm.hs.kr'로 끝나야 합니다.");
         }
 
         if (userRepository.existsByEmail(signUpRequest.getEmail())) {
-            throw new CustomException(ErrorCode.USER_ALREADY_EXISTS, "제목은 1 ~ 15글자여야 합니다.");
+            throw new CustomException(ErrorCode.USER_ALREADY_EXISTS, "이미 가입된 사용자입니다.");
         }
 
         String name = StudentEmailMapper.getNameByEmail(signUpRequest.getEmail());
         if ("Unknown".equals(name)) {
-            throw new CustomException(ErrorCode.INVALID_EMAIL, "제목은 1 ~ 15글자여야 합니다.");
+            throw new CustomException(ErrorCode.INVALID_EMAIL, "유효하지 않은 이메일입니다.");
         }
 
         User user = User.builder()
@@ -41,6 +41,6 @@ public class SignUpServiceImpl implements SignUpService {
                 .build();
         userRepository.save(user);
 
-        return new SignUpResponse("회원가입 성공");
+        return new SignUpResponse("회원가입이 성공적으로 완료되었습니다.");
     }
 }

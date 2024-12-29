@@ -17,14 +17,14 @@ public class LogoutServiceImpl implements LogoutService {
     @Override
     public LogoutResponse logout(String token) {
         if (!token.startsWith("Bearer ")) {
-            throw new CustomException(ErrorCode.INVALID_TOKEN, "제목은 1 ~ 15글자여야 합니다.");
+            throw new CustomException(ErrorCode.INVALID_TOKEN, "토큰 형식이 잘못되었습니다. 'Bearer '로 시작해야 합니다.");
         }
         String accessToken = token.substring(7);
 
         if (!jwtProvider.validateToken(accessToken)) {
-            throw new CustomException(ErrorCode.INVALID_TOKEN, "제목은 1 ~ 15글자여야 합니다.");
+            throw new CustomException(ErrorCode.INVALID_TOKEN, "유효하지 않은 토큰입니다.");
         }
 
-        return new LogoutResponse("로그아웃 성공");
+        return new LogoutResponse("로그아웃에 성공했습니다.");
     }
 }
