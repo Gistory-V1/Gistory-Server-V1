@@ -52,7 +52,7 @@ public class PostController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping
+    @PostMapping("/like")
     public ResponseEntity<LikePostResponse> likePost(
             @RequestHeader("Authorization") String authorization,
             @RequestBody LikePostRequest request) {
@@ -60,7 +60,7 @@ public class PostController {
         return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/like")
     public ResponseEntity<LikePostResponse> unlikePost(
             @RequestHeader("Authorization") String authorization,
             @RequestBody UnlikePostRequest request) {
