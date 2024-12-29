@@ -60,7 +60,7 @@ public class PostController {
         return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping("/like")
+    @DeleteMapping("/like/cancel")
     public ResponseEntity<LikePostResponse> unlikePost(
             @RequestHeader("Authorization") String authorization,
             @RequestBody UnlikePostRequest request) {
