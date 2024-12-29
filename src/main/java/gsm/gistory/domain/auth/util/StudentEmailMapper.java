@@ -175,6 +175,10 @@ public class StudentEmailMapper {
         EMAIL_TO_NAME_MAP.put("s23072", "홍준");
     }
 
+    public static Map<String, String> getEmailToNameMap() {
+        return EMAIL_TO_NAME_MAP;
+    }
+
     public static String getNameByEmail(String email) {
         if (email == null || !email.contains("@")) {
             return null;
