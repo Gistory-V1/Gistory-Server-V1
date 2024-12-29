@@ -34,12 +34,13 @@ public class SubscriptionController {
     @DeleteMapping("/cancel")
     public ResponseEntity<UnsubscribeResponse> unsubscribe(
             @RequestHeader("Authorization") String authorization,
-            @RequestBody SubscribeRequest request) {
+            @RequestParam String name,
+            @RequestParam boolean subClick) {
 
         UnsubscribeResponse response = unsubscribeService.unsubscribe(
-                request.getName(),
+                name,
                 authorization,
-                request.isSubClick()
+                subClick
         );
 
         return ResponseEntity.ok(response);
