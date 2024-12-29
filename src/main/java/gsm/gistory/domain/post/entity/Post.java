@@ -29,7 +29,7 @@ public class Post {
     private String email;
 
     @ManyToOne
-    @JoinColumn(name = "profile_id") // 외래 키 컬럼명 설정
+    @JoinColumn(name = "profile_id")
     private Profile profile;
 
     @Builder.Default
