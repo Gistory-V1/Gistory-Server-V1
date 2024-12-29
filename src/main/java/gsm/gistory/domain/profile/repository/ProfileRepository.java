@@ -12,5 +12,4 @@ public interface ProfileRepository extends JpaRepository<Profile, Long> {
 
     @Query("SELECT p FROM Profile p ORDER BY p.subCount DESC")
     List<Profile> findTop5BySubCount();
-    boolean existsByEmail(String email);
 }
