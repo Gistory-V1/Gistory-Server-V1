@@ -26,6 +26,6 @@ public class Profile {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Builder.Default
-    private Long subCount = 0L;
+    @Column(nullable = false)
+    private Long subCount;
 }
