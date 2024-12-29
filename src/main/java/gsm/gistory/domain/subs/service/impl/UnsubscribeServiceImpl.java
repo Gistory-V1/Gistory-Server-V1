@@ -1,5 +1,7 @@
 package gsm.gistory.domain.subs.service.impl;
 
+import gsm.gistory.domain.profile.entity.Profile;
+import gsm.gistory.domain.profile.repository.ProfileRepository;
 import gsm.gistory.domain.subs.dto.response.UnsubscribeResponse;
 import gsm.gistory.domain.subs.entity.Subscription;
 import gsm.gistory.domain.subs.repository.SubscriptionRepository;
@@ -16,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UnsubscribeServiceImpl implements UnsubscribeService {
 
     private final SubscriptionRepository subscriptionRepository;
+    private final ProfileRepository profileRepository; // 추가
     private final JwtTokenProvider jwtTokenProvider;
 
     @Override
@@ -33,10 +36,16 @@ public class UnsubscribeServiceImpl implements UnsubscribeService {
 
         if (!subClick) {
             subscription.decrementSubCount();
-            subscriptionRepository.save(subscription);
         } else {
             throw new CustomException(ErrorCode.INVALID_REQUEST, "구독 취소 요청이 잘못되었습니다.");
         }
+
+        subscriptionRepository.save(subscription);
+
+        Profile profile = profileRepository.findByName(name)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND, "사용자를 찾을 수 없습니다."));
+        profile.setSubCount(subscription.getSubCount());
+        profileRepository.save(profile);
 
         return UnsubscribeResponse.builder()
                 .message("구독 취소 성공")
