@@ -40,6 +40,7 @@ public class Post {
     @Column(nullable = false)
     private Long views = 0L;
 
+    @Column(name = "author_name")
     private String authorName;
 
     @Builder.Default
