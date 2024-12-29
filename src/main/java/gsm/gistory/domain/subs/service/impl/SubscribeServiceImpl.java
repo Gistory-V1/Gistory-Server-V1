@@ -1,11 +1,10 @@
 package gsm.gistory.domain.subs.service.impl;
 
-import gsm.gistory.domain.profile.entity.Profile;
-import gsm.gistory.domain.profile.repository.ProfileRepository;
 import gsm.gistory.domain.subs.dto.response.SubscribeResponse;
 import gsm.gistory.domain.subs.entity.Subscription;
 import gsm.gistory.domain.subs.repository.SubscriptionRepository;
 import gsm.gistory.domain.subs.service.SubscribeService;
+import gsm.gistory.global.security.jwt.JwtTokenProvider;
 import gsm.gistory.global.security.jwt.exception.CustomException;
 import gsm.gistory.global.security.jwt.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
@@ -17,26 +16,31 @@ import org.springframework.transaction.annotation.Transactional;
 public class SubscribeServiceImpl implements SubscribeService {
 
     private final SubscriptionRepository subscriptionRepository;
-    private final ProfileRepository profileRepository;
+    private final JwtTokenProvider jwtTokenProvider;
 
-    @Transactional
     @Override
+    @Transactional
     public SubscribeResponse subscribe(String name, String authorization, boolean subClick) {
+        if (authorization == null || !authorization.startsWith("Bearer ")) {
+            throw new CustomException(ErrorCode.INVALID_TOKEN, "유효하지 않은 토큰입니다.");
+        }
+
+        String token = authorization.substring(7);
+        jwtTokenProvider.validateToken(token);
+
         Subscription subscription = subscriptionRepository.findByName(name)
-                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND, "구독 대상이 존재하지 않습니다."));
+                .orElseGet(() -> Subscription.builder()
+                        .name(name)
+                        .subCount(0L)
+                        .build());
 
         if (subClick) {
             subscription.incrementSubCount();
-            subscriptionRepository.save(subscription);
-
-            Profile profile = profileRepository.findByName(name)
-                    .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND, "프로필을 찾을 수 없습니다."));
-            profile.incrementSubCount();
-            profileRepository.save(profile);
-
         } else {
-            throw new CustomException(ErrorCode.INVALID_REQUEST, "구독 요청이 잘못되었습니다.");
+            subscription.decrementSubCount();
         }
+
+        subscriptionRepository.save(subscription);
 
         return SubscribeResponse.builder()
                 .message("구독 성공")

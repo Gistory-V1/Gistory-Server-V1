@@ -26,14 +26,4 @@ public class Profile {
     private String email;
 
     private Long subCount;
-
-    public void incrementSubCount() {
-        this.subCount += 1;
-    }
-
-    public void decrementSubCount() {
-        if (this.subCount > 0) {
-            this.subCount -= 1;
-        }
-    }
 }
