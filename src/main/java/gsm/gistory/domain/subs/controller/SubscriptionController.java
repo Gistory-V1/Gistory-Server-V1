@@ -31,7 +31,7 @@ public class SubscriptionController {
         return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping("/cancel")
+    @PostMapping("/cancel")
     public ResponseEntity<UnsubscribeResponse> unsubscribe(
             @RequestHeader("Authorization") String authorization,
             @RequestBody SubscribeRequest request) {
