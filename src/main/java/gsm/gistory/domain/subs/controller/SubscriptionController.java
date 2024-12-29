@@ -31,16 +31,15 @@ public class SubscriptionController {
         return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping("/cancel")
+    @PostMapping("/cancel")
     public ResponseEntity<UnsubscribeResponse> unsubscribe(
             @RequestHeader("Authorization") String authorization,
-            @RequestParam String name,
-            @RequestParam boolean subClick) {
+            @RequestBody SubscribeRequest request) {
 
         UnsubscribeResponse response = unsubscribeService.unsubscribe(
-                name,
+                request.getName(),
                 authorization,
-                subClick
+                request.isSubClick()
         );
 
         return ResponseEntity.ok(response);
