@@ -2,11 +2,14 @@ package gsm.gistory.domain.profile.entity;
 
 import gsm.gistory.domain.post.entity.Post;
 import jakarta.persistence.*;
-import lombok.Getter;
+import lombok.*;
 
 import java.util.List;
 
 @Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Profile {
 
@@ -18,6 +21,9 @@ public class Profile {
 
     @OneToMany(mappedBy = "profile")
     private List<Post> posts;
+
+    @Column(nullable = false, unique = true)
+    private String email;
 
     private Long subCount;
 }
