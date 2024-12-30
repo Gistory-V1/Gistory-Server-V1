@@ -43,9 +43,6 @@ public class Post {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "author")
-    private String author;
-
     @Builder.Default
     @Column(nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
