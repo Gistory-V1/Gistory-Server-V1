@@ -3,10 +3,7 @@ package gsm.gistory.domain.post.controller;
 import gsm.gistory.domain.post.dto.request.CreatePostRequest;
 import gsm.gistory.domain.post.dto.request.LikePostRequest;
 import gsm.gistory.domain.post.dto.request.PostUpdateRequest;
-import gsm.gistory.domain.post.dto.response.CreatePostResponse;
-import gsm.gistory.domain.post.dto.response.GetPostResponse;
-import gsm.gistory.domain.post.dto.response.LikePostResponse;
-import gsm.gistory.domain.post.dto.response.PostUpdateResponse;
+import gsm.gistory.domain.post.dto.response.*;
 import gsm.gistory.domain.post.service.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +21,7 @@ public class PostController {
     private final PostUpdateService postUpdateService;
     private final LikePostService likePostService;
     private final UnlikePostService unlikePostService;
+    private final DeletePostService deletePostService;
 
 
     @PostMapping("/create")
@@ -51,6 +49,15 @@ public class PostController {
         return ResponseEntity.ok(response);
     }
 
+    @DeleteMapping("/delete")
+    public ResponseEntity<Object> deletePost(
+            @RequestHeader("Authorization") String authorization,
+            @RequestParam("postId") Long postId) {
+
+        deletePostService.deletePost(postId, authorization);
+
+        return ResponseEntity.ok().body(new DeletePostResponse("글 삭제 성공", 200));
+    }
     @PostMapping("/like")
     public ResponseEntity<LikePostResponse> likePost(
             @RequestHeader("Authorization") String authorization,
