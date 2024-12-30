@@ -10,7 +10,7 @@ public class GetPostResponse {
     private String title;
     private String content;
     private Long likeCount;
-    private String author;
+    private String name;
     private Long views;
     private String createdAt;
 }
