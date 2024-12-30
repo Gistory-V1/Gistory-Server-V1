@@ -10,5 +10,5 @@ import java.util.List;
 public interface PostRepository extends JpaRepository<Post, Long> {
     @Query("SELECT p FROM Post p ORDER BY p.views DESC")
     List<Post> findTop5ByViews(Pageable pageable);
-    List<Post> findByAuthorName(String name);
+    List<Post> findByName(String name);
 }
