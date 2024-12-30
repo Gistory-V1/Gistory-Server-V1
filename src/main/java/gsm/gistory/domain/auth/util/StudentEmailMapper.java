@@ -79,7 +79,7 @@ public class StudentEmailMapper {
         EMAIL_TO_NAME_MAP.put("s24061", "박현민");
         EMAIL_TO_NAME_MAP.put("s24062", "배용빈");
         EMAIL_TO_NAME_MAP.put("s24063", "서경주");
-        EMAIL_TO_NAME_MAP.put("s24064", "송재웍");
+        EMAIL_TO_NAME_MAP.put("s24064", "송재욱");
         EMAIL_TO_NAME_MAP.put("s24065", "NULL");
         EMAIL_TO_NAME_MAP.put("s24066", "이상혁");
         EMAIL_TO_NAME_MAP.put("s24067", "이용표");
