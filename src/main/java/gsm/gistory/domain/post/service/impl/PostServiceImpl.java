@@ -18,7 +18,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<GetPostsResponse> getPostsByAuthorName(String name) {
-        List<Post> posts = postRepository.findByAuthorName(name);
+        List<Post> posts = postRepository.findByName(name);
 
         return posts.stream().map(post -> GetPostsResponse.builder()
                 .postId(post.getId())
