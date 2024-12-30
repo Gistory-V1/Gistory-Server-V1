@@ -1,5 +1,6 @@
 package gsm.gistory.domain.post.service.impl;
 
+import gsm.gistory.domain.auth.util.StudentEmailMapper;
 import gsm.gistory.domain.post.dto.request.CreatePostRequest;
 import gsm.gistory.domain.post.dto.response.CreatePostResponse;
 import gsm.gistory.domain.post.entity.Post;
@@ -32,11 +33,20 @@ public class CreatePostServiceImpl implements CreatePostService {
         }
 
         String email = jwtTokenProvider.getEmailFromToken(token);
+        if (email == null || email.isBlank()) {
+            throw new CustomException(ErrorCode.INVALID_TOKEN, "이메일 정보를 확인할 수 없습니다.");
+        }
+
+        String name = StudentEmailMapper.getNameByEmail(email);
+        if (name == null || name.equals("Unknown")) {
+            throw new CustomException(ErrorCode.INVALID_REQUEST, "작성자의 이름을 확인할 수 없습니다.");
+        }
 
         Post post = Post.builder()
                 .title(request.getTitle())
                 .content(request.getContent())
                 .email(email)
+                .name(name)
                 .build();
 
         postRepository.save(post);
