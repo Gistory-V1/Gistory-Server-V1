@@ -3,7 +3,6 @@ package gsm.gistory.domain.post.controller;
 import gsm.gistory.domain.post.dto.request.CreatePostRequest;
 import gsm.gistory.domain.post.dto.request.LikePostRequest;
 import gsm.gistory.domain.post.dto.request.PostUpdateRequest;
-import gsm.gistory.domain.post.dto.request.UnlikePostRequest;
 import gsm.gistory.domain.post.dto.response.CreatePostResponse;
 import gsm.gistory.domain.post.dto.response.GetPostResponse;
 import gsm.gistory.domain.post.dto.response.LikePostResponse;
