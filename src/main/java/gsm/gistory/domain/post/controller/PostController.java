@@ -55,18 +55,19 @@ public class PostController {
     @PostMapping("/like")
     public ResponseEntity<LikePostResponse> likePost(
             @RequestHeader("Authorization") String authorization,
-            @RequestBody LikePostRequest request) {
-        LikePostResponse response = likePostService.likePost(request.getPostId(), request.isLikeClick(), authorization);
+            @RequestParam("postId") Long postId,
+            @RequestBody @Valid LikePostRequest request) {
+
+        LikePostResponse response = likePostService.likePost(postId, request.isLikeClick(), authorization);
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/like/cancel")
     public ResponseEntity<LikePostResponse> unlikePost(
             @RequestHeader("Authorization") String authorization,
-            @RequestBody UnlikePostRequest request) {
+            @RequestParam("postId") Long postId) {
 
-        LikePostResponse response = unlikePostService.unlikePost(request.getPostId(), authorization);
-
+        LikePostResponse response = unlikePostService.unlikePost(postId, authorization);
         return ResponseEntity.ok(response);
     }
 }
