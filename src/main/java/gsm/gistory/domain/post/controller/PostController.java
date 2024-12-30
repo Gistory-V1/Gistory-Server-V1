@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/post")
 @RequiredArgsConstructor
@@ -22,6 +24,7 @@ public class PostController {
     private final LikePostService likePostService;
     private final UnlikePostService unlikePostService;
     private final DeletePostService deletePostService;
+    private final PostService postService;
 
 
     @PostMapping("/create")
@@ -46,6 +49,14 @@ public class PostController {
             @RequestBody PostUpdateRequest request,
             @RequestHeader("Authorization") String authorization) {
         PostUpdateResponse response = postUpdateService.updatePost(request, authorization);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/list")
+    public ResponseEntity<List<GetPostsResponse>> getPostsByAuthorName(
+            @RequestHeader("name") String name
+    ) {
+        List<GetPostsResponse> response = postService.getPostsByAuthorName(name);
         return ResponseEntity.ok(response);
     }
 

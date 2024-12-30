@@ -31,6 +31,7 @@ public class PostService {
             Post post = posts.get(i);
             Map<String, Object> postMap = new HashMap<>();
             postMap.put("rank", i + 1);
+            postMap.put("postId", post.getId());
             postMap.put("name", post.getAuthorName());
             postMap.put("title", post.getTitle());
             postMap.put("likeCount", post.getLikeCount());
@@ -41,5 +42,6 @@ public class PostService {
 
         return result;
     }
+
 }
 
