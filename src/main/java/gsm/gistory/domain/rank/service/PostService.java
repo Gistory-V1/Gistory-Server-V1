@@ -3,6 +3,9 @@ package gsm.gistory.domain.rank.service;
 import gsm.gistory.domain.post.entity.Post;
 import gsm.gistory.domain.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.format.DateTimeFormatter;
@@ -18,9 +21,10 @@ public class PostService {
     private final PostRepository postRepository;
 
     public List<Map<String, Object>> getTop5PostsByViews() {
-        List<Post> posts = postRepository.findTop5ByViews();
-        List<Map<String, Object>> result = new ArrayList<>();
+        Pageable top5 = PageRequest.of(0, 5, Sort.by(Sort.Direction.DESC, "views"));
+        List<Post> posts = postRepository.findTop5ByViews(top5);
 
+        List<Map<String, Object>> result = new ArrayList<>();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
         for (int i = 0; i < posts.size(); i++) {
@@ -38,3 +42,4 @@ public class PostService {
         return result;
     }
 }
+
