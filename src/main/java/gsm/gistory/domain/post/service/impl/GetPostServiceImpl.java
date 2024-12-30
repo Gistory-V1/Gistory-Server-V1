@@ -39,7 +39,7 @@ public class GetPostServiceImpl implements GetPostService {
                 .title(post.getTitle())
                 .content(post.getContent())
                 .likeCount(post.getLikeCount())
-                .author(post.getEmail())
+                .name(post.getName())
                 .views(post.getViews())
                 .createdAt(post.getCreatedAt().toString())
                 .build();
