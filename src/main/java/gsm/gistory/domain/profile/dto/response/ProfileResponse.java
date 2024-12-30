@@ -8,6 +8,6 @@ import lombok.Getter;
 public class ProfileResponse {
     private Long userId;
     private String name;
-    private Long postsCount;
-    private Long likesCount;
+    private Long views;
+    private Long subCount;
 }

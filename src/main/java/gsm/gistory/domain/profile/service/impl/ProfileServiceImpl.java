@@ -20,14 +20,14 @@ public class ProfileServiceImpl implements ProfileService {
         Profile profile = profileRepository.findByName(name)
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND, "사용자를 찾을 수 없습니다."));
 
-        long postsCount = profile.getPosts().size();
-        long likesCount = profile.getPosts().stream().mapToLong(post -> post.getLikeCount()).sum();
+        long views = profile.getPosts().stream().mapToLong(post -> post.getViews()).sum();
+        long subCount = profile.getSubCount();
 
         return ProfileResponse.builder()
                 .userId(profile.getId())
                 .name(profile.getName())
-                .postsCount(postsCount)
-                .likesCount(likesCount)
+                .views(views)
+                .subCount(subCount)
                 .build();
     }
 }
