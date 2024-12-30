@@ -26,7 +26,6 @@ public class PostController {
     private final DeletePostService deletePostService;
     private final PostService postService;
 
-
     @PostMapping("/create")
     public ResponseEntity<CreatePostResponse> createPost(
             @Valid @RequestHeader("Authorization") String authorizationHeader,
@@ -54,7 +53,7 @@ public class PostController {
 
     @GetMapping("/list")
     public ResponseEntity<List<GetPostsResponse>> getPostsByAuthorName(
-            @RequestHeader("name") String name
+            @RequestParam("name") String name
     ) {
         List<GetPostsResponse> response = postService.getPostsByAuthorName(name);
         return ResponseEntity.ok(response);
@@ -64,17 +63,15 @@ public class PostController {
     public ResponseEntity<Object> deletePost(
             @RequestHeader("Authorization") String authorization,
             @RequestParam("postId") Long postId) {
-
         deletePostService.deletePost(postId, authorization);
-
         return ResponseEntity.ok().body(new DeletePostResponse("글 삭제 성공", 200));
     }
+
     @PostMapping("/like")
     public ResponseEntity<LikePostResponse> likePost(
             @RequestHeader("Authorization") String authorization,
             @RequestParam("postId") Long postId,
             @RequestBody @Valid LikePostRequest request) {
-
         LikePostResponse response = likePostService.likePost(postId, request.isLikeClick(), authorization);
         return ResponseEntity.ok(response);
     }
@@ -83,7 +80,6 @@ public class PostController {
     public ResponseEntity<LikePostResponse> unlikePost(
             @RequestHeader("Authorization") String authorization,
             @RequestParam("postId") Long postId) {
-
         LikePostResponse response = unlikePostService.unlikePost(postId, authorization);
         return ResponseEntity.ok(response);
     }
