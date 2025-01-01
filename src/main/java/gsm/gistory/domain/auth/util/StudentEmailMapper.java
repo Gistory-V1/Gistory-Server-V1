@@ -94,7 +94,7 @@ public class StudentEmailMapper {
         // --------------2학년-------------U");
         EMAIL_TO_NAME_MAP.put("s23001", "김겸비");
         EMAIL_TO_NAME_MAP.put("s23002", "권태연");
-        EMAIL_TO_NAME_MAP.put("s23003", "곽민석");
+        EMAIL_TO_NAME_MAP.put("s23003", "곽민성");
         EMAIL_TO_NAME_MAP.put("s23004", "김유준");
         EMAIL_TO_NAME_MAP.put("s23005", "김재균");
         EMAIL_TO_NAME_MAP.put("s23006", "김주은");
