@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 public class TokenResponse {
-
     private String accessToken;
     private String refreshToken;
     private LocalDateTime accessTokenExpiresIn;
