@@ -22,7 +22,7 @@ public class ProfileInitializer {
                 Profile profile = Profile.builder()
                         .email(email)
                         .name("NULL".equals(name) ? null : name)
-                        .subCount(0L) // 초기 구독 수는 0으로 설정
+                        .subCount(0L)
                         .build();
 
                 profileRepository.save(profile);

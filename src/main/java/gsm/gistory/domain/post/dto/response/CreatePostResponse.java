@@ -6,7 +6,6 @@ import lombok.Getter;
 @Getter
 @Builder
 public class CreatePostResponse {
-
     private String message;
     private int statusCode;
 }
